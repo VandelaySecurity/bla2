@@ -1,0 +1,27 @@
+name: jetbrains
+
+on:
+  pull_request: {}
+
+jobs:
+  resharper:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: copy nuget.config
+        run: cp build/nuget.config nuget.config
+      - name: inspect to disk
+        uses: LegitSecurity/inspectcode-action@v4
+        with:
+          solution: './ScmCollectors.sln'
+        env:
+          LEGIT_PACKAGES_USER: amith-legit
+          LEGIT_PACKAGES_PASSWORD: ${{secrets.GHCR_PAT}}
+    
+      - name: Upload
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v1
+        with:
+          name: report.xml
+          path: report.xml
