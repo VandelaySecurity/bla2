@@ -1,0 +1,2 @@
+- name: SonarQube Shellcheck
+  uses: sunilagarwal22-zz/sonarscanner-shell@2.0
